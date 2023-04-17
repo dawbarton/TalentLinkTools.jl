@@ -1,9 +1,17 @@
-name = "CandidatePackTools"
+name = "TalentLinkTools"
 uuid = "79692de3-e45f-4abf-8d4a-e8cb837271f2"
 authors = ["David AW Barton"]
-version = "1.0.0-DEV"
+version = "1.0.0"
+
+[deps]
+CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
+PDFIO = "4d0d745f-9d9a-592e-8d18-1ad8a0f42b92"
+Tables = "bd369af6-aec1-5ad0-b16a-f7cc5008161c"
 
 [compat]
+CSV = "0.10"
+PDFIO = "0.1"
+Tables = "1.10"
 julia = "1.9"
 
 [extras]
