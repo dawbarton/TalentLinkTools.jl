@@ -1,4 +1,4 @@
-module CandidatePackTools
+module TalentLinkTools
 
 using PDFIO: pdDocOpen, pdDocGetPageCount, pdDocGetPage, pdPageExtractText, pdDocClose
 using Tables: Tables

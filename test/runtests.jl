@@ -1,6 +1,6 @@
-using CandidatePackTools
+using TalentLinkTools
 using Test
 
-@testset "CandidatePackTools.jl" begin
+@testset "TalentLinkTools.jl" begin
     # Write your tests here.
 end
