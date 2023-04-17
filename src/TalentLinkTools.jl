@@ -3,8 +3,9 @@ module TalentLinkTools
 using PDFIO: pdDocOpen, pdDocGetPageCount, pdDocGetPage, pdPageExtractText, pdDocClose
 using Tables: Tables
 using CSV: write
+using Ghostscript_jll: gs
 
-export get_candidates, export_candidates
+export get_candidates, export_candidate_list, extract_candidate_pdf
 
 function is_candidate_start(str)
     return occursin(r"^\s*\d+\.+(?:AACCAADD  |ACAD )(?:iinntteerrnnaall  |internal )?(?:PPIIFF,,  bbyy  |PIF, by )", str)
@@ -84,13 +85,42 @@ function get_candidates(src)
     return candidates
 end
 
-function export_candidates(candidates::Vector{Candidate}, dest)
+function export_candidate_list(candidates::Vector{Candidate}, dest)
     write(dest, candidates)
 end
 
-function export_candidates(src, dest)
+function export_candidate_list(src, dest)
     candidates = get_candidates(src)
-    export_candidates(candidates, dest)
+    export_candidate_list(candidates, dest)
+end
+
+function extract_pages(src, dest, (startpage, endpage))
+    if !((startpage isa Integer) && (endpage isa Integer))
+        throw(ArgumentError("startpage and endpage must be integers"))
+    end
+    if startpage < 1
+        throw(ArgumentError("startpage must be >= 1"))
+    end
+    if endpage < startpage
+        throw(ArgumentError("endpage must be >= startpage"))
+    end
+    run(`$(gs()) -sDEVICE=pdfwrite -dNOPAUSE -dBATCH -dSAFER -dFirstPage=$(startpage) -dLastPage=$(endpage) "-sOutputFile=$(dest)" "$(src)"`)
+end
+
+function extract_candidate_pdf(src, dest, candidate::Candidate)
+    extract_pages(src, dest, (candidate.page_start, candidate.page_end))
+end
+
+function extract_candidate_pdf(src, dest, candidates::Vector{Candidate})
+    n = length(string(length(candidates)))
+    for (i, candidate) in enumerate(candidates)
+        extract_candidate_pdf(src, joinpath(dest, "$(lpad(i, n, "0"))-$(candidate.forename) $(candidate.surname).pdf"), candidate)
+    end
+end
+
+function extract_candidate_pdf(src, dest)
+    candidates = get_candidates(src)
+    extract_candidate_pdf(src, dest, candidates)
 end
 
 end
