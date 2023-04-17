@@ -1,4 +1,4 @@
-# CandidatePackTools
+# TalentLinkTools
 
 [![ColPrac: Contributor's Guide on Collaborative Practices for Community Packages](https://img.shields.io/badge/ColPrac-Contributor's%20Guide-blueviolet)](https://github.com/SciML/ColPrac)
 
@@ -7,7 +7,7 @@ As part of interviewing new recruits, I get sent large, combined PDFs of CVs and
 ## Example usage
 
 ```julia
-using CandidatePackTools
+using TalentLinkTools
 
 export_candidates("source file.pdf", "destination file.csv")
 ```
